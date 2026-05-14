@@ -8,3 +8,18 @@ def success_response(data: Any = None, message: str = "ok") -> dict[str, Any]:
         "message": message,
     }
 
+
+def error_response(
+    message: str,
+    code: str,
+    details: Any = None,
+) -> dict[str, Any]:
+    return {
+        "success": False,
+        "data": {},
+        "message": message,
+        "error": {
+            "code": code,
+            "details": details if details is not None else {},
+        },
+    }
