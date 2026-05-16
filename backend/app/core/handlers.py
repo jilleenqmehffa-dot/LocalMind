@@ -10,6 +10,16 @@ async def http_exception_handler(
     request: Request,
     exc: StarletteHTTPException,
 ) -> JSONResponse:
+    if isinstance(exc.detail, dict):
+        return JSONResponse(
+            status_code=exc.status_code,
+            content=error_response(
+                exc.detail.get("message", "HTTP Error"),
+                exc.detail.get("code", "HTTP_ERROR"),
+                exc.detail.get("details", {}),
+            ),
+        )
+
     if exc.status_code == status.HTTP_404_NOT_FOUND:
         return JSONResponse(
             status_code=status.HTTP_404_NOT_FOUND,
